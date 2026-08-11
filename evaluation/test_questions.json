@@ -1,0 +1,8 @@
+What is the punishment for theft? → Expected: Section 379
+What is the punishment for murder? → Expected: Section 302
+What is the punishment for robbery? → Expected: Section 392
+What is the punishment for cheating? → Expected: Section 420
+What does Section 302 say? → Expected: Section 302
+What does Section 379 say? → Expected: Section 379
+What does Section 392 say? → Expected: Section 392
+What is the capital of France? → Expected: System should refuse / say it cannot answer from the legal documents.
