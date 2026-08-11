@@ -10,11 +10,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from src.retrieval.text_cleaner import clean_legal_text
+from src.ingestion.text_cleaner import clean_text
+
 
 QDRANT_PATH = PROJECT_ROOT / "data" / "qdrant"
 COLLECTION_NAME = "pakistan_legal_code"
 MODEL_NAME = "BAAI/bge-m3"
+
 
 LEGAL_SECTIONS = {
     "theft": "379",
@@ -24,6 +26,7 @@ LEGAL_SECTIONS = {
     "forgery": "465",
     "dacoity": "395"
 }
+
 
 print("Loading Qdrant...")
 client = QdrantClient(path=str(QDRANT_PATH))
@@ -109,7 +112,7 @@ def find_exact_section(section_number):
             continue
 
         if pattern.match(text):
-            document["text"] = clean_legal_text(text)
+            document["text"] = clean_text(text)
             matches.append(document)
 
     return matches
@@ -177,7 +180,7 @@ def semantic_search(query, limit=20):
         if not is_actual_legal_text(document):
             continue
 
-        document["text"] = clean_legal_text(
+        document["text"] = clean_text(
             document["text"]
         )
 
@@ -226,6 +229,7 @@ def retrieve(query, top_k=5):
 
         if key not in unique_candidates:
             unique_candidates[key] = document
+
         elif document["score"] > unique_candidates[key]["score"]:
             unique_candidates[key] = document
 
@@ -269,22 +273,29 @@ if __name__ == "__main__":
                 start=1
             ):
                 print(f"RESULT {index}")
+
                 print(
                     f"Score: {result['score']:.4f}"
                 )
+
                 print(
                     f"Page: {result['page']}"
                 )
+
                 print(
                     f"Chunk: {result['chunk']}"
                 )
+
                 print(
                     f"Source: {result['source']}"
                 )
+
                 print(result["text"][:700])
+
                 print("-" * 70)
 
         except Exception as e:
+
             print(
                 f"ERROR: {type(e).__name__}: {e}"
             )

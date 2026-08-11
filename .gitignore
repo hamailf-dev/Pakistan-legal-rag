@@ -12,3 +12,4 @@ data/evaluation/*
 
 *.log
 .DS_Store
+data/qdrant/
